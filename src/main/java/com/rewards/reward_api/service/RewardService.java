@@ -48,7 +48,8 @@ public class RewardService {
     private final Map<String, Customer> customerMap = Map.of(
             "1", new Customer("1", "Dinesh", "dinesh@test.com"),
             "2", new Customer("2", "Sai ram", "sr@test.com"),
-            "3", new Customer("3", "Sumith", "sg@test.com")
+            "3", new Customer("3", "Sumith", "sg@test.com"),
+            "4", new Customer("4", "Poor", "poor@test.com")
     );
 
     /**
