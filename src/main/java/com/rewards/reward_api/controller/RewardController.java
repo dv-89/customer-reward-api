@@ -41,9 +41,23 @@ public class RewardController{
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @NotNull LocalDate to
             ){
 
+        if(customerId == null || customerId.trim().isEmpty()){
+            throw new IllegalArgumentException("Customer ID must not be blank");
+        }
+
+        if(from == null || to == null){
+            throw new IllegalArgumentException("Both from and to dates must be provided");
+        }
+
         if(from.isAfter(to)){
             throw new IllegalArgumentException("Start date must be before or equal to end date.");
         }
+
+        if(from.isAfter(LocalDate.now()) || to.isAfter(LocalDate.now())){
+            throw new IllegalArgumentException("Dates must not be in future");
+        }
+
+
 
         return rewardService.calculateRewards(customerId, from, to).thenApply(ResponseEntity::ok);
     }

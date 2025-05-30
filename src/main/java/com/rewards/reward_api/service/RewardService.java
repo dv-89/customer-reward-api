@@ -2,6 +2,7 @@ package com.rewards.reward_api.service;
 
 
 import com.rewards.reward_api.dto.RewardResponse;
+import com.rewards.reward_api.exception.CustomerNotFoundException;
 import com.rewards.reward_api.model.Customer;
 import com.rewards.reward_api.model.Transaction;
 import com.rewards.reward_api.util.RewardCalculatorUtil;
@@ -67,7 +68,7 @@ public class RewardService {
 
         // check whether a customer with that id exists or not.
         if(customer == null){
-            throw new IllegalArgumentException("customer not found " + customerId );
+            throw new CustomerNotFoundException("customer with ID " + customerId + " not found" );
         }
 
         // filter transactions by customer Id and date range
