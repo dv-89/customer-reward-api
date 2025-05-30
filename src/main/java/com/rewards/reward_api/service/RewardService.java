@@ -5,6 +5,7 @@ import com.rewards.reward_api.dto.RewardResponse;
 import com.rewards.reward_api.model.Customer;
 import com.rewards.reward_api.model.Transaction;
 import com.rewards.reward_api.util.RewardCalculatorUtil;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Service class responsible for calculating reward points for customers.
@@ -56,7 +58,9 @@ public class RewardService {
      * @param to            - end date of range (inclusive)
      * @return              - A RewardResponse object containing the customers reward details
      */
-    public RewardResponse calculateRewards(String customerId, LocalDate from, LocalDate to){
+
+    @Async
+    public CompletableFuture<RewardResponse> calculateRewards(String customerId, LocalDate from, LocalDate to){
 
         // get customer details
         Customer customer = customerMap.get(customerId);
@@ -73,7 +77,7 @@ public class RewardService {
                 .filter(t -> !t.getDate().isBefore(from) && !t.getDate().isAfter(to))
                 .toList();
 
-        // map to hold monthly reward points
+        // map to hold reward points for each month
         Map<String, Integer> monthlyPoints = new LinkedHashMap<>();
 
         int totalPoints = 0;
@@ -91,14 +95,16 @@ public class RewardService {
 
 
         // Build response DTO
-        return new RewardResponse(
-                customer.getId(),
-                customer.getName(),
-                totalPoints,
-                filtered_transactions.size(),
-                from,
-                to,
-                monthlyPoints
+        RewardResponse response = new RewardResponse(
+                                                        customer.getId(),
+                                                        customer.getName(),
+                                                        totalPoints,
+                                                        filtered_transactions.size(),
+                                                        from,
+                                                        to,
+                                                        monthlyPoints
         );
+
+        return CompletableFuture.completedFuture(response);
     }
 }
