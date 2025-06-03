@@ -9,6 +9,7 @@ import com.rewards.reward_api.util.RewardCalculatorUtil;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.LinkedHashMap;
@@ -32,13 +33,13 @@ public class RewardService {
      *             100+ - 2 points for each dollar
      */
     private final List<Transaction> transactions = List.of(
-        new Transaction("1", "T001", LocalDate.of(2024, 1, 10), 120),
-        new Transaction("1", "T002", LocalDate.of(2024, 2, 5), 75),
-        new Transaction("1", "T003", LocalDate.of(2024, 3, 15), 200),
-        new Transaction("2", "T004", LocalDate.of(2024, 1, 20), 55),
-        new Transaction("2", "T005", LocalDate.of(2024, 2, 8), 150),
-        new Transaction("3", "T006", LocalDate.of(2024, 1, 10), 90),
-        new Transaction("3", "T007", LocalDate.of(2024, 3, 29), 20)
+        new Transaction("1", "T001", LocalDate.of(2024, 1, 10), new BigDecimal("120.75")),
+        new Transaction("1", "T002", LocalDate.of(2024, 2, 5), new BigDecimal("75.00")),
+        new Transaction("1", "T003", LocalDate.of(2024, 3, 15), new BigDecimal("200.50")),
+        new Transaction("2", "T004", LocalDate.of(2024, 1, 20), new BigDecimal("55.00")),
+        new Transaction("2", "T005", LocalDate.of(2024, 2, 8), new BigDecimal("150.30")),
+        new Transaction("3", "T006", LocalDate.of(2024, 1, 10), new BigDecimal("90.00")),
+        new Transaction("3", "T007", LocalDate.of(2024, 3, 29), new BigDecimal("20.25"))
     );
 
 
@@ -101,7 +102,7 @@ public class RewardService {
                                                         customer.getId(),
                                                         customer.getName(),
                                                         totalPoints,
-                                                        filtered_transactions.size(),
+                                                        filtered_transactions,
                                                         from,
                                                         to,
                                                         monthlyPoints

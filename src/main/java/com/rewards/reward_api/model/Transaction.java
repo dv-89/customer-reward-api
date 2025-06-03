@@ -1,5 +1,6 @@
 package com.rewards.reward_api.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -12,14 +13,14 @@ public class Transaction{
 
 
     /** unique identifier for transaction **/
-    private String transactitonId;
+    private String transactionId;
 
 
     /** Date when the transaction was made **/
     private LocalDate date;
 
     /** Transaction amount **/
-    private int amount;
+    private BigDecimal amount;
 
     // ----- constructors ---
 
@@ -35,13 +36,13 @@ public class Transaction{
      * All Args Constructor that constucts a transaction with specified values
      *
      * @param customerId        - customer ID
-     * @param transactitonId    - transaction ID
+     * @param transactionId    - transaction ID
      * @param date              - transaction date
      * @param amount            - transaction amount
      */
-    public Transaction(String customerId, String transactitonId, LocalDate date, int amount) {
+    public Transaction(String customerId, String transactionId, LocalDate date, BigDecimal amount) {
         this.customerId = customerId;
-        this.transactitonId = transactitonId;
+        this.transactionId = transactionId;
         this.date = date;
         this.amount = amount;
     }
@@ -54,12 +55,12 @@ public class Transaction{
         this.customerId = customerId;
     }
 
-    public String getTransactitonId() {
-        return transactitonId;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    public void setTransactitonId(String transactitonId) {
-        this.transactitonId = transactitonId;
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 
     public LocalDate getDate() {
@@ -70,11 +71,11 @@ public class Transaction{
         this.date = date;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }
