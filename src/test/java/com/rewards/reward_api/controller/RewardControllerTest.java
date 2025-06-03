@@ -2,6 +2,7 @@ package com.rewards.reward_api.controller;
 
 
 import com.rewards.reward_api.dto.RewardResponse;
+import com.rewards.reward_api.model.Transaction;
 import com.rewards.reward_api.service.RewardService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -56,8 +59,14 @@ public class RewardControllerTest {
      */
     @Test
     void testGetCustomerRewardsSuccess() throws Exception {
+
+        List<Transaction> txList = List.of(
+                new Transaction("1", "T001", LocalDate.of(2024,1,10), new BigDecimal("120.75")),
+                new Transaction("1", "T001", LocalDate.of(2024,2,5), new BigDecimal("75.00"))
+                );
+
         RewardResponse response = new RewardResponse(
-                "1", "Dinesh", 100, 2,
+                "1", "Dinesh", 100, txList,
                 LocalDate.of(2024, 1, 1),
                 LocalDate.of(2024, 3, 31),
                 Map.of("January", 50, "February", 50)
@@ -82,7 +91,13 @@ public class RewardControllerTest {
                 .andExpect(jsonPath("$.customerId").value("1"))
                 .andExpect(jsonPath("$.customerName").value("Dinesh"))
                 .andExpect(jsonPath("$.totalPoints").value(100))
-                .andExpect(jsonPath("$.transactionCount").value(2))
+
+                .andExpect(jsonPath("$.transactionList").isArray())
+                .andExpect(jsonPath("$.transactionList.length()").value(2))
+
+                .andExpect(jsonPath("$.transactionList[0].transactionId").value("T001"))
+                .andExpect(jsonPath("$.transactionList[0].amount").value(120.75))
+
                 .andExpect(jsonPath("$.monthlyBreakdown.January").value(50))
                 .andExpect(jsonPath("$.monthlyBreakdown.February").value(50));
     }

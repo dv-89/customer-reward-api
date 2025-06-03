@@ -1,6 +1,9 @@
 package com.rewards.reward_api.dto;
 
+import com.rewards.reward_api.model.Transaction;
+
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,8 +20,8 @@ public class RewardResponse {
     /** Total reward points accumulated by customer */
     private int totalPoints;
 
-    /** Total no of transactions processed for calculation */
-    private int transactionCount;
+    /** List of transactions processed for calculation */
+    private List<Transaction> transactionList;
 
     /** Start date (inclusive) of the period for which rewards were calculated */
     private LocalDate fromDate;
@@ -45,18 +48,18 @@ public class RewardResponse {
      * @param customerId            - customer ID
      * @param customerName          - customer Name
      * @param totalPoints           - total reward points
-     * @param transactionCount      - number of transactions
+     * @param transactionList       - list of transactions
      * @param fromDate              - start date of reward period
      * @param toDate                - end date of reward period
      * @param monthlyBreakdown      - map that has reward points for each month
      */
     public RewardResponse(String customerId, String customerName, int totalPoints,
-                          int transactionCount, LocalDate fromDate, LocalDate toDate,
+                          List<Transaction> transactionList, LocalDate fromDate, LocalDate toDate,
                           Map<String, Integer> monthlyBreakdown){
         this.customerId = customerId;
         this.customerName = customerName;
         this.totalPoints = totalPoints;
-        this.transactionCount = transactionCount;
+        this.transactionList = transactionList;
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.monthlyBreakdown = monthlyBreakdown;
@@ -88,12 +91,12 @@ public class RewardResponse {
         this.totalPoints = totalPoints;
     }
 
-    public int getTransactionCount() {
-        return transactionCount;
+    public List<Transaction> getTransactionList() {
+        return transactionList;
     }
 
-    public void setTransactionCount(int transactionCount) {
-        this.transactionCount = transactionCount;
+    public void setTransactionList(List<Transaction> transactionList) {
+        this.transactionList = transactionList;
     }
 
     public LocalDate getFromDate() {
@@ -118,5 +121,9 @@ public class RewardResponse {
 
     public void setMonthlyBreakdown(Map<String, Integer> monthlyBreakdown) {
         this.monthlyBreakdown = monthlyBreakdown;
+    }
+
+    public int getTransactionCount() {
+        return (transactionList == null)? 0 : transactionList.size();
     }
 }
